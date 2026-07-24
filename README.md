@@ -302,12 +302,6 @@ The current version demonstrates core banking operations and compliance monitori
 B.Tech in Computer Science and Technology  
 Usha Mittal Institute of Technology, Mumbai
 
-### Connect with Me
-
-- GitHub: https://github.com/<your-github-username>
-- LinkedIn: https://www.linkedin.com/in/<your-linkedin-username>
-
----
 
 ## ⭐ Support
 
