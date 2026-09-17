@@ -254,42 +254,43 @@ END$$
 -- CUSTOMER TRANSACTION HISTORY
 -- ==========================================================
 
-CREATE PROCEDURE customer_transaction_history
-(
+DELIMITER $$
+
+CREATE PROCEDURE customer_transaction_history(
     IN p_account_number VARCHAR(20)
 )
-
 BEGIN
 
     SELECT
-
-    t.transaction_reference,
-
-    tt.transaction_type_name,
-
-    t.amount,
-
-    t.transaction_status,
-
-    t.transaction_time,
-
-    t.remarks
-
+        t.transaction_id,
+        t.transaction_reference,
+        sa.account_number AS sender_account,
+        ra.account_number AS receiver_account,
+        tt.transaction_type_name,
+        t.amount,
+        c.currency_code,
+        t.transaction_status,
+        t.transaction_time,
+        t.remarks
     FROM transactions t
 
-    JOIN accounts a
-    ON t.sender_account_id = a.account_id
+    LEFT JOIN accounts sa
+        ON t.sender_account_id = sa.account_id
+
+    LEFT JOIN accounts ra
+        ON t.receiver_account_id = ra.account_id
 
     JOIN transaction_types tt
-    ON t.transaction_type_id = tt.transaction_type_id
+        ON t.transaction_type_id = tt.transaction_type_id
 
-    WHERE
-    t.sender_account_id=a.account_id
-    OR
-    t.receiver_account_id=a.account_id
+    JOIN currencies c
+        ON t.currency_id = c.currency_id
+
+    WHERE sa.account_number = p_account_number
+       OR ra.account_number = p_account_number
 
     ORDER BY t.transaction_time DESC;
 
-END$$
+END $$
 
 DELIMITER ;
